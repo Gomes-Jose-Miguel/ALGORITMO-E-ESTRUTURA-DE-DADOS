@@ -1,0 +1,105 @@
+public class PesquisaComercial1 {
+
+        static class Produto {
+        int codigo;
+        String nome;
+        double preco;
+        int quantidade;
+
+        Produto(int codigo, String nome, double preco, int quantidade) {
+            this.codigo = codigo;
+            this.nome = nome;
+            this.preco = preco;
+            this.quantidade = quantidade;
+        }
+    }
+
+        static Produto[] tabela = new Produto[10];
+System.out.println("Código já existente!");
+        static int hash(int codigo) {
+        return codigo % tabela.length;
+    }
+       static void inserir(Produto produto) {
+        int indice = hash(produto.codigo);
+
+       while (tabela[indice] != null) {
+
+            if (tabela[indice].codigo == produto.codigo) {
+                System.out.println("Código já existente!");
+                return;
+            }
+
+            indice = (indice + 1) % tabela.length;
+        }
+
+        tabela[indice] = produto;
+
+        System.out.println("Produto inserido na posição " + indice);
+    }
+ static Produto pesquisar(int codigo) {
+        int indice = hash(codigo);
+        int inicio = indice;
+
+        while (tabela[indice] != null) {
+
+            if (tabela[indice].codigo == codigo) {
+                return tabela[indice];
+            }
+
+            indice = (indice + 1) % tabela.length;
+
+            if (indice == inicio) {
+                break;
+            }
+        }
+
+        return null;
+    }
+
+    static void mostrarTabela() {
+        System.out.println("\n===== TABELA HASH =====");
+
+        for (int i = 0; i < tabela.length; i++) {
+
+            if (tabela[i] != null) {
+                System.out.println("Posição " + i +
+                        " | Código: " + tabela[i].codigo +
+                        " | Produto: " + tabela[i].nome +
+                        " | Preço: " + tabela[i].preco +
+                        " Kz | Stock: " + tabela[i].quantidade);
+            } else {
+                System.out.println("Posição " + i + " | Vazia");
+            }
+        }
+    }
+
+    static void mostrarProduto(Produto produto) {
+        if (produto != null) {
+            System.out.println("\n===== PRODUTO ENCONTRADO =====");
+            System.out.println("Código: " + produto.codigo);
+            System.out.println("Nome: " + produto.nome);
+            System.out.println("Preço: " + produto.preco + " Kz");
+            System.out.println("Quantidade: " + produto.quantidade);
+        } else {
+            System.out.println("\nProduto não encontrado!");
+        }
+    }
+
+    public static void main(String[] args) {
+
+        inserir(new Produto(101, "Computador", 250000, 5));
+        inserir(new Produto(111, "Teclado", 15000, 10));
+        inserir(new Produto(121, "Mouse", 8000, 15));
+        inserir(new Produto(202, "Monitor", 120000, 4));
+
+        mostrarTabela();
+
+        int codigoPesquisa = 111;
+
+        System.out.println("\nPesquisando o código: " + codigoPesquisa);
+
+        Produto resultado = pesquisar(codigoPesquisa);
+
+        mostrarProduto(resultado);
+    }
+}
